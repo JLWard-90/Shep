@@ -1,0 +1,126 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SheepController : MonoBehaviour
+{
+    public float shepDistLimit = 10;
+    public float speed = 5;
+    public float turnSpeed = 45;
+    public bool inPen = false;
+    float decisionTimer = 0;
+    float decisionTimeLimit = 5; //Time between decisions in seconds
+    bool decisionMade = false;
+    float leftRight;
+    bool turning;
+    float turningTime;
+    [SerializeField]
+    bool AvoidingShep = false;
+    Transform shepTransform;
+    public float maxSpeed = 20;
+    [SerializeField]
+    float shepDistance;
+    Animator animator;
+    bool moving;
+    private void Awake() 
+    {
+        shepTransform = GameObject.Find("Player").transform;
+        animator = this.gameObject.GetComponentInChildren<Animator>();
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        decisionMade = false;
+        decisionTimeLimit = Random.Range(0,8);
+        AvoidingShep = false;
+        animator.SetBool("moving", true);
+        moving = true; //Set the sheep moving
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 awayFromShep = transform.position - shepTransform.position;
+        shepDistance = Vector3.Magnitude(awayFromShep);
+        checkForShep();
+        if (AvoidingShep && moving)
+        {
+            AvoidShepWalk();
+        }
+        else if (moving)
+        {
+            RandomSheepWalk();
+            decisionTimer += Time.deltaTime;
+            if (!turning && decisionTimer > turningTime)
+            {
+                turning = false;
+            }
+            if (decisionTimer > decisionTimeLimit)
+            {
+                decisionTimer = 0;
+                decisionTimeLimit = Random.Range(0,8);
+                Debug.Log(decisionTimeLimit);
+                decisionMade = false;
+            }
+        }
+        else
+        {
+            Debug.Log("sheep not moving");
+        }
+        
+    }
+
+    void RandomSheepWalk()
+    {
+        if (turning)
+        {
+            transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y + (turnSpeed * leftRight * Time.deltaTime),0);
+            transform.position += speed * transform.forward * Time.deltaTime;
+        }
+        else
+        {
+            transform.position += speed * transform.forward * Time.deltaTime;
+        }
+        if (!decisionMade)
+        {
+            leftRight = Random.Range(-1.0f,1.0f);
+            decisionMade = true;
+            turning = true;
+            turningTime = Random.Range(0.0f,1.5f);
+        }
+    }
+    void AvoidShepWalk()
+    {
+        Vector3 awayFromShep = transform.position - shepTransform.position;
+        float step = turnSpeed * Time.deltaTime;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, awayFromShep, step, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
+        float runSpeed = (maxSpeed - speed) * (shepDistance / shepDistLimit) + speed;
+        transform.position += runSpeed * transform.forward * Time.deltaTime;
+    }
+
+    void checkForShep() //Checks if the sheep has noticed shep
+    {
+        if (Vector3.Magnitude(transform.position - shepTransform.position) < shepDistLimit)
+        {
+            float noticeNum = Random.Range(0,2f);
+            if (noticeNum > 1)
+            {
+                AvoidingShep = true;
+            }
+        }
+        else
+        {
+            AvoidingShep = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.tag == "Pen")
+        {
+            moving = false;
+            animator.SetBool("moving",false);
+        }
+    }
+}
