@@ -53,8 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\LevelController.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\SheepController.cs" />
+     <Compile Include="Assets\Scripts\SheepSpawner.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/Users/jake/Documents/game_plan/shep/Shep/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
