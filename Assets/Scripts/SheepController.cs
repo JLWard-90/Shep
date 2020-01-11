@@ -93,22 +93,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         transform.position += runSpeed * transform.forward * Time.deltaTime;
     }
 
-    void checkForShep() //Checks if the sheep has noticed shep
-    {
-        if (Vector3.Magnitude(transform.position - shepTransform.position) < shepDistLimit)
-        {
-            float noticeNum = Random.Range(0,2f);
-            if (noticeNum > 1)
-            {
-                AvoidingShep = true;
-            }
-        }
-        else
-        {
-            AvoidingShep = false;
-        }
-    }
-
     private void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject.tag == "Pen")

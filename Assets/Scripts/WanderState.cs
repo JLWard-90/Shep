@@ -26,8 +26,12 @@ public class WanderState : FSMState
         }
         if (Vector3.Distance(npc.position, player.position) < shepDistanceLimit)
         {
-            Debug.Log("Switch to Fleeing state");
-            sheep.SetTransition(Transition.SawPlayer);
+            float noticeNum = Random.Range(0, 2f);
+            if (noticeNum > 1) //50% chance of the sheep noticing the player
+            {
+                Debug.Log("Switch to Fleeing state");
+                sheep.SetTransition(Transition.SawPlayer);
+            }
         }
         
     }
