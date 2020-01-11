@@ -59,6 +59,8 @@ public class FSM : MonoBehaviour
             {
                 Debug.Log(state.ID);
                 Debug.Log(currentStateID);
+                currentState.BeforeExit(); //perform the BeforeExit() method of the original state
+                state.BeforeEnter(); //Perform the BeforeEnter() method of the new state
                 currentState = state;
                 break;
             }
