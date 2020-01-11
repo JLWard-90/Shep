@@ -2,35 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Transition
+{
+    None = 0,
+    SawPlayer, //When the ai sees the player
+    LostPlayer, //When the ai is out of range of the player
+    InPen, //When the ai is in the pen
+}
+
+public enum FSMStateID
+{
+    None = 0,
+    Wandering,
+    Standing,
+    Fleeing,
+}
 public class FSM : MonoBehaviour
 {
     //Thois is the finite state maching (FSM) class
     // Start is called before the first frame update
-    public enum Transition
-    {
-        None = 0,
-        SawPlayer, //When the ai sees the player
-        LostPlayer, //When the ai is out of range of the player
-        InPen, //When the ai is in the pen
-    }
+    
 
-    public enum FSMStateID
-    {
-        None = 0,
-        Wandering,
-        Standing,
-        Fleeing,
-    }
-
-    private List<FSMState> fsmStates;
+    protected List<FSMState> fsmStates;
     private FSMStateID currentStateID;
     public FSMStateID CurrentStateID()
     {
         return currentStateID;
     }
     private FSMState currentState;
-    public FSMState CurrentState()
+    public FSMState CurrentState { get { return currentState; } }
+
+    public void AddFSMState(FSMState state)
     {
-        return currentState;
+        Debug.Log(fsmStates);
+        if (fsmStates == null)
+        {
+            fsmStates = new List<FSMState>();
+        }
+        fsmStates.Add(state);
+    }
+
+
+    public void PerformTransition(Transition t)
+    {
+        FSMStateID id = currentState.GetOutputState(t);
+        if (id == FSMStateID.None)
+        {
+            Debug.LogError("FSM ERROR: State " + currentStateID.ToString() + " does not have a target state " +
+                           " for transition " + t.ToString());
+            return;
+        }
+        currentStateID = id;
+        foreach (FSMState state in fsmStates)
+        {
+            if (currentState.ID == currentStateID)
+            {
+                currentState = state;
+                break;
+            }
+        }
+    }
+
+    public void SetInitialState()
+    {
+        currentState = fsmStates[0];
     }
 }

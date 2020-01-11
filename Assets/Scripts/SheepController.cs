@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SheepController : MonoBehaviour
+public class SheepController : FSM //The sheep controller inherits from the FSM class
 {
     public float shepDistLimit = 10;
     public float speed = 5;
@@ -26,6 +26,8 @@ public class SheepController : MonoBehaviour
     {
         shepTransform = GameObject.Find("Player").transform;
         animator = this.gameObject.GetComponentInChildren<Animator>();
+        fsmStates = new List<FSMState>();
+        ConstructFSM(); //Construct the finite state machine
     }
     // Start is called before the first frame update
     void Start()
@@ -35,12 +37,14 @@ public class SheepController : MonoBehaviour
         AvoidingShep = false;
         animator.SetBool("moving", true);
         moving = true; //Set the sheep moving
+        SetInitialState();
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 awayFromShep = transform.position - shepTransform.position;
+        /*Vector3 awayFromShep = transform.position - shepTransform.position;
         shepDistance = Vector3.Magnitude(awayFromShep);
         checkForShep();
         if (AvoidingShep && moving) //Here we implement a simple finite state machine where the sheep has two three states: Avoiding shep, Simple sheep movement, stopped
@@ -54,11 +58,13 @@ public class SheepController : MonoBehaviour
         else
         {
             Debug.Log("sheep not moving");
-        }
+        }*/
+        CurrentState.Reason(shepTransform, transform);
+        CurrentState.Act(shepTransform, transform);
         
     }
 
-    void RandomSheepWalk()
+    private void RandomSheepWalk()
     {
         if (turning)
         {
@@ -77,7 +83,7 @@ public class SheepController : MonoBehaviour
             turningTime = Random.Range(0.0f,1.5f);
         }
     }
-    void AvoidShepWalk()
+    public void AvoidShepWalk()
     {
         Vector3 awayFromShep = transform.position - shepTransform.position;
         float step = turnSpeed * Time.deltaTime;
@@ -112,7 +118,7 @@ public class SheepController : MonoBehaviour
         }
     }
 
-    private void SimpleSheepMovement()
+    public void SimpleSheepMovement()
     {
         RandomSheepWalk();
         decisionTimer += Time.deltaTime;
@@ -129,8 +135,50 @@ public class SheepController : MonoBehaviour
         }
     }
 
-    private void CheckState() //Check and set the state for the Finite State Machine
+    public void SetTransition(Transition t)
     {
+        if (t==Transition.SawPlayer)
+        {
+            PerformTransition(t);
+        }
+        if (t==Transition.LostPlayer)
+        {
+            PerformTransition(t);   
+        }
+        if (t==Transition.InPen)
+        {
+            PerformTransition(t);
+        }
+    }
 
+    private void ConstructFSM()
+    {
+        WanderState wandering = new WanderState(transform);
+        wandering.AddTransition(Transition.SawPlayer, FSMStateID.Fleeing);
+        wandering.AddTransition(Transition.InPen, FSMStateID.Standing);
+
+        FleeingState fleeing = new FleeingState(transform);
+        fleeing.AddTransition(Transition.LostPlayer, FSMStateID.Wandering);
+        fleeing.AddTransition(Transition.InPen, FSMStateID.Standing);
+
+        StandingState standing = new StandingState();
+
+        AddFSMState(wandering);
+        AddFSMState(fleeing);
+        AddFSMState(standing);
+    }
+    
+    public void InitRandomWalk()
+    {
+        decisionMade = false;
+        decisionTimeLimit = Random.Range(0, 8);
+        AvoidingShep = false;
+        animator.SetBool("moving", true);
+        moving = true; //Set the sheep moving
+    }
+
+    public void TurnOffWalkAnimation()
+    {
+        animator.SetBool("moving", false);
     }
 }
