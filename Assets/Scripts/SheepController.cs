@@ -99,8 +99,8 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     {
         if (other.gameObject.tag == "Pen")
         {
-            inPen = false;
-            animator.SetBool("moving",false);
+            inPen = true;
+            //animator.SetBool("moving",false);
         }
     }
 
