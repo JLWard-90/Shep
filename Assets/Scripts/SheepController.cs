@@ -43,25 +43,13 @@ public class SheepController : MonoBehaviour
         Vector3 awayFromShep = transform.position - shepTransform.position;
         shepDistance = Vector3.Magnitude(awayFromShep);
         checkForShep();
-        if (AvoidingShep && moving)
+        if (AvoidingShep && moving) //Here we implement a simple finite state machine where the sheep has two three states: Avoiding shep, Simple sheep movement, stopped
         {
             AvoidShepWalk();
         }
         else if (moving)
         {
-            RandomSheepWalk();
-            decisionTimer += Time.deltaTime;
-            if (!turning && decisionTimer > turningTime)
-            {
-                turning = false;
-            }
-            if (decisionTimer > decisionTimeLimit)
-            {
-                decisionTimer = 0;
-                decisionTimeLimit = Random.Range(0,8);
-                Debug.Log(decisionTimeLimit);
-                decisionMade = false;
-            }
+            SimpleSheepMovement();
         }
         else
         {
@@ -122,5 +110,27 @@ public class SheepController : MonoBehaviour
             moving = false;
             animator.SetBool("moving",false);
         }
+    }
+
+    private void SimpleSheepMovement()
+    {
+        RandomSheepWalk();
+        decisionTimer += Time.deltaTime;
+        if (!turning && decisionTimer > turningTime)
+        {
+            turning = false;
+        }
+        if (decisionTimer > decisionTimeLimit)
+        {
+            decisionTimer = 0;
+            decisionTimeLimit = Random.Range(0, 8);
+            Debug.Log(decisionTimeLimit);
+            decisionMade = false;
+        }
+    }
+
+    private void CheckState() //Check and set the state for the Finite State Machine
+    {
+
     }
 }
