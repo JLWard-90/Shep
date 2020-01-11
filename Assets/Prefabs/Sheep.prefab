@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shepDistLimit: 30
   speed: 5
-  turnSpeed: 30
+  turnSpeed: 5
   inPen: 0
   AvoidingShep: 0
   maxSpeed: 20
