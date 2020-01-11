@@ -22,4 +22,13 @@ public class StandingState : FSMState
         npc.GetComponent<SheepController>().TurnOffWalkAnimation();
         npc.GetComponent<SheepController>().sheepActive = false;
     }
+
+    public override void BeforeEnter()
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void BeforeExit()
+    {
+        throw new System.NotImplementedException();
+    }
 }

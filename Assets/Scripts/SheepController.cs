@@ -43,21 +43,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*Vector3 awayFromShep = transform.position - shepTransform.position;
-        shepDistance = Vector3.Magnitude(awayFromShep);
-        checkForShep();
-        if (AvoidingShep && moving) //Here we implement a simple finite state machine where the sheep has two three states: Avoiding shep, Simple sheep movement, stopped
-        {
-            AvoidShepWalk();
-        }
-        else if (moving)
-        {
-            SimpleSheepMovement();
-        }
-        else
-        {
-            Debug.Log("sheep not moving");
-        }*/
         if (sheepActive)
         {
             CurrentState.Reason(shepTransform, transform);
@@ -100,7 +85,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         if (other.gameObject.tag == "Pen")
         {
             inPen = true;
-            //animator.SetBool("moving",false);
         }
     }
 

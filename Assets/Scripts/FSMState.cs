@@ -49,5 +49,7 @@ public abstract class FSMState
 
     public abstract void Act(Transform player, Transform npc);
 
+    public abstract void BeforeEnter();
 
+    public abstract void BeforeExit();
 }

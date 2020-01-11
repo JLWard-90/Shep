@@ -42,4 +42,14 @@ public class WanderState : FSMState
         //The behaviour associated with this state:
         sheep.SimpleSheepMovement();
     }
+
+    public override void BeforeEnter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void BeforeExit()
+    {
+        throw new System.NotImplementedException();
+    }
 }

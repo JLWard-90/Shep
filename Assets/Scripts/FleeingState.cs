@@ -33,4 +33,13 @@ public class FleeingState : FSMState
         //throw new System.NotImplementedException();
         npc.GetComponent<SheepController>().AvoidShepWalk();
     }
+
+    public override void BeforeEnter()
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void BeforeExit()
+    {
+        throw new System.NotImplementedException();
+    }
 }
