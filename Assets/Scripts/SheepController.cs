@@ -42,7 +42,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         /*Vector3 awayFromShep = transform.position - shepTransform.position;
         shepDistance = Vector3.Magnitude(awayFromShep);

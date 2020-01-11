@@ -18,8 +18,9 @@ public class FleeingState : FSMState
         if (Vector3.Distance(npc.position, player.position) > shepDistanceLimit)
         {
             Debug.Log("Switch to Walking state");
+            sheep.SetTransition(Transition.LostPlayer);
         }
-        sheep.SetTransition(Transition.LostPlayer);
+        
     }
 
     public override void Act(Transform player, Transform npc)

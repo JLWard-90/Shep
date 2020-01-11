@@ -51,7 +51,7 @@ MonoBehaviour:
   turnSpeed: 30
   inPen: 0
   AvoidingShep: 0
-  maxSpeed: 35
+  maxSpeed: 20
   shepDistance: 100
 --- !u!65 &52014316512234108
 BoxCollider:
@@ -89,10 +89,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6593640839736414503}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: a3ab33871ab18420eac6d85fa0188b7d,
+    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
         type: 3}
-      propertyPath: m_Name
-      value: Sheep
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1b2724d53123f40fc9626a8980aa5a4d, type: 2}
+    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a3ab33871ab18420eac6d85fa0188b7d,
         type: 3}
@@ -149,25 +164,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
+    - target: {fileID: -927199367670048503, guid: a3ab33871ab18420eac6d85fa0188b7d,
         type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 1b2724d53123f40fc9626a8980aa5a4d, type: 2}
-    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
-        type: 3}
-      propertyPath: m_CullingMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: a3ab33871ab18420eac6d85fa0188b7d,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: m_Name
+      value: Sheep
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3ab33871ab18420eac6d85fa0188b7d, type: 3}

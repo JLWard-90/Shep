@@ -55,8 +55,10 @@ public class FSM : MonoBehaviour
         currentStateID = id;
         foreach (FSMState state in fsmStates)
         {
-            if (currentState.ID == currentStateID)
+            if (state.ID == currentStateID)
             {
+                Debug.Log(state.ID);
+                Debug.Log(currentStateID);
                 currentState = state;
                 break;
             }
