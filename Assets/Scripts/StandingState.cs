@@ -18,7 +18,8 @@ public class StandingState : FSMState
     public override void Act(Transform player, Transform npc)
     {
         // throw new System.NotImplementedException();
-        //The sheep does nothing if it is standing
+        //The sheep does nothing if it is standingif
         npc.GetComponent<SheepController>().TurnOffWalkAnimation();
+        npc.GetComponent<SheepController>().sheepActive = false;
     }
 }

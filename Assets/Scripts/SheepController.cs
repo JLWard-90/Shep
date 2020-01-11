@@ -21,7 +21,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     [SerializeField]
     float shepDistance;
     Animator animator;
-    bool moving;
+    public bool sheepActive =true;
     private void Awake() 
     {
         shepTransform = GameObject.Find("Player").transform;
@@ -36,7 +36,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         decisionTimeLimit = Random.Range(0,8);
         AvoidingShep = false;
         animator.SetBool("moving", true);
-        moving = true; //Set the sheep moving
         SetInitialState();
     }
 
@@ -59,8 +58,11 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         {
             Debug.Log("sheep not moving");
         }*/
-        CurrentState.Reason(shepTransform, transform);
-        CurrentState.Act(shepTransform, transform);
+        if (sheepActive)
+        {
+            CurrentState.Reason(shepTransform, transform);
+            CurrentState.Act(shepTransform, transform);
+        }
         
     }
 
@@ -158,7 +160,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         decisionTimeLimit = Random.Range(0, 8);
         AvoidingShep = false;
         animator.SetBool("moving", true);
-        moving = true; //Set the sheep moving
     }
 
     public void TurnOffWalkAnimation()
