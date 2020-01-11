@@ -21,4 +21,16 @@ public class FSM : MonoBehaviour
         Standing,
         Fleeing,
     }
+
+    private List<FSMState> fsmStates;
+    private FSMStateID currentStateID;
+    public FSMStateID CurrentStateID()
+    {
+        return currentStateID;
+    }
+    private FSMState currentState;
+    public FSMState CurrentState()
+    {
+        return currentState;
+    }
 }
