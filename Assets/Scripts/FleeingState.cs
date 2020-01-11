@@ -15,6 +15,11 @@ public class FleeingState : FSMState
     public override void Reason(Transform player, Transform npc)
     {
         //throw new System.NotImplementedException();
+        if (sheep.inPen == true)
+        {
+            Debug.Log("switch to standingState");
+            sheep.SetTransition(Transition.InPen);
+        }
         if (Vector3.Distance(npc.position, player.position) > shepDistanceLimit)
         {
             Debug.Log("Switch to Walking state");

@@ -19,6 +19,11 @@ public class WanderState : FSMState
     {
         //throw new System.NotImplementedException();
         //Check the distance between the player and this npc
+        if (sheep.inPen == true)
+        {
+            Debug.Log("switch to standingState");
+            sheep.SetTransition(Transition.InPen);
+        }
         if (Vector3.Distance(npc.position, player.position) < shepDistanceLimit)
         {
             Debug.Log("Switch to Fleeing state");
