@@ -100,7 +100,6 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         {
             decisionTimer = 0;
             decisionTimeLimit = Random.Range(0, 8);
-            Debug.Log(decisionTimeLimit);
             decisionMade = false;
         }
     }

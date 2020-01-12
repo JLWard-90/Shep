@@ -71,6 +71,17 @@
     <Compile Include="Assets\Scripts\SheepController.cs" />
     <Compile Include="Assets\Scripts\SheepSpawner.cs" />
     <Compile Include="Assets\Scripts\StandingState.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\MinMax.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\Noise.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\NoiseFilterFactory.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\NoiseSettings.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\RigidNoiseFilter.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\ShapeGenerator.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\ShapeSettings.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\SimpleNoiseFilter.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\TerrainFace.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\World.cs" />
+    <Compile Include="Assets\Scripts\TerrainGeneration\iNoiseFilter.cs" />
     <Compile Include="Assets\Scripts\WanderState.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/jakel/Documents/GitHub/Shep/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

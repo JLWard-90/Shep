@@ -25,10 +25,10 @@ public class StandingState : FSMState
 
     public override void BeforeEnter()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
     public override void BeforeExit()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 }
