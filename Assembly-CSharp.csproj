@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BoidingState.cs" />
     <Compile Include="Assets\Scripts\FSM.cs" />
     <Compile Include="Assets\Scripts\FSMState.cs" />
     <Compile Include="Assets\Scripts\FleeingState.cs" />

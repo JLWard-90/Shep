@@ -31,7 +31,7 @@ public class FleeingState : FSMState
     public override void Act(Transform player, Transform npc)
     {
         //throw new System.NotImplementedException();
-        npc.GetComponent<SheepController>().AvoidShepWalk();
+        AvoidShepWalk(player, npc);
     }
 
     public override void BeforeEnter()
@@ -41,5 +41,15 @@ public class FleeingState : FSMState
     public override void BeforeExit()
     {
         //throw new System.NotImplementedException();
+    }
+
+    public void AvoidShepWalk(Transform player, Transform npc)
+    {
+        Vector3 awayFromShep = npc.position - player.position;
+        float step = sheep.turnSpeed * Time.deltaTime;
+        Vector3 newDir = Vector3.RotateTowards(npc.forward, awayFromShep, step, 0.0f);
+        npc.rotation = Quaternion.LookRotation(newDir);
+        float runSpeed = (sheep.maxSpeed - sheep.speed) * (sheep.shepDistance / sheep.shepDistLimit) + sheep.speed;
+        npc.position += runSpeed * npc.forward * Time.deltaTime;
     }
 }

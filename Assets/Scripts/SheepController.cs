@@ -18,8 +18,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     bool AvoidingShep = false;
     Transform shepTransform;
     public float maxSpeed = 20;
-    [SerializeField]
-    float shepDistance;
+    public float shepDistance;
     Animator animator;
     public bool sheepActive =true;
     private void Awake() 
@@ -70,15 +69,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
             turningTime = Random.Range(0.0f,1.5f);
         }
     }
-    public void AvoidShepWalk()
-    {
-        Vector3 awayFromShep = transform.position - shepTransform.position;
-        float step = turnSpeed * Time.deltaTime;
-        Vector3 newDir = Vector3.RotateTowards(transform.forward, awayFromShep, step, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDir);
-        float runSpeed = (maxSpeed - speed) * (shepDistance / shepDistLimit) + speed;
-        transform.position += runSpeed * transform.forward * Time.deltaTime;
-    }
+    
 
     private void OnTriggerEnter(Collider other) 
     {
