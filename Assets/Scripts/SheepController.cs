@@ -22,6 +22,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     Animator animator;
     public bool sheepActive =true;
     public int turnDir = 0;
+    public float friendDistance = 20; //This is used in the BoidingState to decide whether a sheep is added to the flock
     private void Awake() 
     {
         shepTransform = GameObject.Find("Player").transform;

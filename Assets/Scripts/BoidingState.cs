@@ -9,12 +9,13 @@ public class BoidingState : FSMState
     private float shepDistanceLimit = 70;
     private SheepController sheep;
     bool avoiding = false;
-    List<Transform> otherSheepInFlock;
+    List<Transform> otherSheepInFlock; //Each sheep will keep track of the other sheep in its flock. A flock will therefore be a construct of each sheep's view of the world around it.
     public BoidingState(Transform npc)
     {
         stateID = FSMStateID.Boiding;
         sheep = npc.GetComponent<SheepController>();
         shepDistanceLimit = sheep.shepDistLimit;
+        otherSheepInFlock = new List<Transform>();
     }
     public override void BeforeEnter()
     {
@@ -31,10 +32,25 @@ public class BoidingState : FSMState
     public override void Reason(Transform player, Transform npc)
     {
         //throw new System.NotImplementedException();
-
         //In our reasoning state we need to be able to add or remove sheep from the flock
         //Add sheep if they become close enough
         //Remove sheep if they are far away enough
+        if (Vector3.Distance(npc.position, player.position) < sheep.shepDistLimit)
+        {
+            Debug.Log("Switching to fleeing state");
+            sheep.SetTransition(Transition.SawPlayer);
+        }
+        else if (otherSheepInFlock.Count > 0) //If the sheep even has a flock
+        {
+            CullFlock(npc);
+        }
+        else
+        {
+            //If there is no flock then the sheep should not be boiding at all. Set to WanderState
+            Debug.Log("Switch to Walking state");
+            sheep.SetTransition(Transition.LostPlayer);//Lost player pretty much just sets the sheep to wander so I might as well just use that.
+        }
+        
         //Switch to wandering state if no more sheep in flock on a coin flip
         //Switch to fleeing state if player too close
     }
@@ -118,12 +134,31 @@ public class BoidingState : FSMState
             return dir;
         }
     }
+    /* The following is no longer used in this script but is certainly useful to know!
     static double MeanAngle(double[] angles)
     {
         var x = angles.Sum(a => Cos(a * PI / 180)) / angles.Length;
         var y = angles.Sum(a => Sin(a * PI / 180)) / angles.Length;
         return Atan2(y, x) * 180 / PI;
+    }*/
+
+    void CullFlock(Transform npc)
+    {
+        List<int> sheepToRemove = new List<int>();
+        for (int i = 0; i < otherSheepInFlock.Count; i++)
+        {
+            Transform singleSheep = otherSheepInFlock[i];
+            if (Vector3.Distance(npc.position, singleSheep.position) > sheep.friendDistance)//If sheep are too far away to be friends
+            {
+                sheepToRemove.Add(i);//Add those sheep to a list and then...
+            }
+        }
+        if (sheepToRemove.Count > 0)
+        {
+            foreach (int i in sheepToRemove)
+            {
+                otherSheepInFlock.RemoveAt(i); //... remove those sheep from the flock
+            }
+        }
     }
-
-
 }
