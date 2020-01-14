@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5802813974380257697}
   m_Layer: 0
   m_Name: Sheep
-  m_TagString: Untagged
+  m_TagString: sheep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   AvoidingShep: 0
   maxSpeed: 20
   shepDistance: 100
+  sheepActive: 1
 --- !u!65 &52014316512234108
 BoxCollider:
   m_ObjectHideFlags: 0

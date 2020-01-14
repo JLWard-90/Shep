@@ -21,6 +21,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     public float shepDistance;
     Animator animator;
     public bool sheepActive =true;
+    public int turnDir = 0;
     private void Awake() 
     {
         shepTransform = GameObject.Find("Player").transform;
