@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.Math; //Necessary to compute mean angles
+using System.Linq; //Necessary to compute mean angles
 
 public class BoidingState : FSMState
 {
@@ -80,7 +82,26 @@ public class BoidingState : FSMState
             //So first we need a component to deal with aligning the flock. This should be the dominant component, say 0.75 of the turn
             if(otherSheepInFlock.Count > 0) //Only try flocking behaviour if there is a flock
             {
-
+                float averageFlockAngle = 0;
+                Vector3 averageFlockPosition = new Vector3(0, 0, 0);
+                foreach (Transform sheepTrans in otherSheepInFlock)
+                {
+                    averageFlockAngle += sheepTrans.eulerAngles.y; //For the moment, we are assuming that the game always takes place on a flat surface
+                    averageFlockPosition.x += sheepTrans.position.x;
+                    averageFlockPosition.y += sheepTrans.position.y;
+                    averageFlockPosition.z += sheepTrans.position.z;
+                }
+                averageFlockAngle = averageFlockAngle / otherSheepInFlock.Count;
+                averageFlockPosition.x = averageFlockPosition.x / otherSheepInFlock.Count;
+                averageFlockPosition.y = averageFlockPosition.y / otherSheepInFlock.Count;
+                averageFlockPosition.z = averageFlockPosition.z / otherSheepInFlock.Count;
+                Vector3 towardsFlockCentre = averageFlockPosition - npc.transform.position;
+                //0.75 weighting to flock average direction
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed*0.75f * (averageFlockAngle - npc.eulerAngles.y) * Time.deltaTime), 0);
+                //0.25 weighting to flock centre
+                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*0.25f, 0.0f);
+                npc.rotation = Quaternion.LookRotation(newDir);
+                npc.position += sheep.speed * npc.forward * Time.deltaTime;
             }
         }
     }
@@ -97,5 +118,12 @@ public class BoidingState : FSMState
             return dir;
         }
     }
+    static double MeanAngle(double[] angles)
+    {
+        var x = angles.Sum(a => Cos(a * PI / 180)) / angles.Length;
+        var y = angles.Sum(a => Sin(a * PI / 180)) / angles.Length;
+        return Atan2(y, x) * 180 / PI;
+    }
+
 
 }
