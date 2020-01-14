@@ -12,7 +12,7 @@ public class BoidingState : FSMState
     List<Transform> otherSheepInFlock;
     public BoidingState(Transform npc)
     {
-        stateID = FSMStateID.Fleeing;
+        stateID = FSMStateID.Boiding;
         sheep = npc.GetComponent<SheepController>();
         shepDistanceLimit = sheep.shepDistLimit;
     }

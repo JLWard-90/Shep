@@ -7,6 +7,7 @@ public enum Transition
     None = 0,
     SawPlayer, //When the ai sees the player
     LostPlayer, //When the ai is out of range of the player
+    FoundFriend, //When the ai makes a friend and starts behaving as a boid.
     InPen, //When the ai is in the pen
 }
 
@@ -16,6 +17,7 @@ public enum FSMStateID
     Wandering,
     Standing,
     Fleeing,
+    Boiding,
 }
 public class FSM : MonoBehaviour
 {
