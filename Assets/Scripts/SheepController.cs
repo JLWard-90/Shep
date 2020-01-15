@@ -138,6 +138,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         AddFSMState(wandering);
         AddFSMState(fleeing);
         AddFSMState(standing);
+        AddFSMState(boiding);
     }
     
     public void InitRandomWalk()

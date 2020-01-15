@@ -26,7 +26,7 @@ public class BoidingState : FSMState
     public override void BeforeExit()
     {
         //throw new System.NotImplementedException();
-        Debug.Log("Exit BoidingState");
+        //Debug.Log("Exit BoidingState");
     }
 
     public override void Reason(Transform player, Transform npc)
@@ -35,10 +35,25 @@ public class BoidingState : FSMState
         //In our reasoning state we need to be able to add or remove sheep from the flock
         //Add sheep if they become close enough
         //Remove sheep if they are far away enough
+        RaycastHit[] hit;
+        hit = Physics.SphereCastAll(npc.position, sheep.friendDistance, npc.forward);
+        //Debug.Log(hit);
         if (sheep.inPen)
         {
             Debug.Log("transition to stand");
             sheep.SetTransition(Transition.InPen);
+        }
+        else if (hit.Length > 0)
+        {
+            //Add sheep to flock
+            //
+            foreach (RaycastHit q in hit)
+            {
+                if (q.transform.gameObject.tag == "sheep" && !otherSheepInFlock.Contains(q.transform) && q.transform != npc)
+                {
+                    otherSheepInFlock.Add(q.transform);
+                }
+            }
         }
         else if (Vector3.Distance(npc.position, player.position) < sheep.shepDistLimit)
         {
@@ -70,13 +85,18 @@ public class BoidingState : FSMState
         Vector3 forwardDir = Vector3.forward;
         //Raycast forward:
         RaycastHit hit;
+        //Debug.Log("boiding...");
         if (Physics.Raycast(sheep.transform.position, Vector3.forward, out hit))
         {
-            float collisionDistance = (sheep.speed / Time.deltaTime) * 3;
+            //Debug.Log("collisionDetector hit");
+            float collisionDistance = (sheep.speed * Time.deltaTime) * 30;
+            Debug.Log(collisionDistance);
+            Debug.Log(hit.distance);
             if (hit.distance < collisionDistance) //If sheep will collide with something
             {
                 if(!avoiding)//If not already avoiding
                 {
+                    Debug.Log("avoiding collision");
                     sheep.turnDir = TurnDir();
                     avoiding = true;
                 }
@@ -91,10 +111,14 @@ public class BoidingState : FSMState
                 }
                 npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * leftRight * Time.deltaTime), 0);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
+
             }
+            
+            //return;//Only do collision avoidance on this Act
         }
-        else
-        {
+
+        //Debug.Log(otherSheepInFlock.Count);
+        avoiding = false;
             sheep.turnDir = 0; //If no collision detected set the turning direction to 0
             //Now We have delt with avoiding immediate collisions, we can do the flocking
             //So first we need a component to deal with aligning the flock. This should be the dominant component, say 0.75 of the turn
@@ -111,17 +135,16 @@ public class BoidingState : FSMState
                 }
                 averageFlockAngle = averageFlockAngle / otherSheepInFlock.Count;
                 averageFlockPosition.x = averageFlockPosition.x / otherSheepInFlock.Count;
-                averageFlockPosition.y = averageFlockPosition.y / otherSheepInFlock.Count;
+                averageFlockPosition.y = 0;// averageFlockPosition.y / otherSheepInFlock.Count;
                 averageFlockPosition.z = averageFlockPosition.z / otherSheepInFlock.Count;
                 Vector3 towardsFlockCentre = averageFlockPosition - npc.transform.position;
                 //0.75 weighting to flock average direction
                 npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed*0.75f * (averageFlockAngle - npc.eulerAngles.y) * Time.deltaTime), 0);
                 //0.25 weighting to flock centre
-                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*0.25f, 0.0f);
+                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*-0.001f, 0.0f);
                 npc.rotation = Quaternion.LookRotation(newDir);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
             }
-        }
     }
 
     int TurnDir()

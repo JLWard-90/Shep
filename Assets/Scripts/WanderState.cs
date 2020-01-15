@@ -45,10 +45,11 @@ public class WanderState : FSMState
             {
                 foreach(GameObject sh in sheeples)
                 {
-                    //Debug.Log(Vector3.Distance(npc.position, sh.transform.position));
-                    if (Vector3.Distance(npc.position, sh.transform.position) < sheep.friendDistance)
+                    
+                    if (Vector3.Distance(npc.position, sh.transform.position) < sheep.friendDistance && npc != sh)
                     {
-                        Debug.Log("Switch to Boiding state");
+                        Debug.Log(Vector3.Distance(npc.position, sh.transform.position));
+                        //Debug.Log("Switch to Boiding state");
                         sheep.SetTransition(Transition.FoundFriend);
                     }
                 }

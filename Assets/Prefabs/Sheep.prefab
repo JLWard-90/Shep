@@ -55,7 +55,7 @@ MonoBehaviour:
   shepDistance: 100
   sheepActive: 1
   turnDir: 0
-  friendDistance: 10
+  friendDistance: 2
 --- !u!65 &52014316512234108
 BoxCollider:
   m_ObjectHideFlags: 0
