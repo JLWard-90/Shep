@@ -111,6 +111,10 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         {
             PerformTransition(t);
         }
+        if (t==Transition.FoundFriend)
+        {
+            PerformTransition(t);
+        }
     }
 
     private void ConstructFSM()
@@ -118,12 +122,18 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
         WanderState wandering = new WanderState(transform);
         wandering.AddTransition(Transition.SawPlayer, FSMStateID.Fleeing);
         wandering.AddTransition(Transition.InPen, FSMStateID.Standing);
+        wandering.AddTransition(Transition.FoundFriend, FSMStateID.Boiding);
 
         FleeingState fleeing = new FleeingState(transform);
         fleeing.AddTransition(Transition.LostPlayer, FSMStateID.Wandering);
         fleeing.AddTransition(Transition.InPen, FSMStateID.Standing);
 
         StandingState standing = new StandingState();
+
+        BoidingState boiding = new BoidingState(transform);
+        boiding.AddTransition(Transition.SawPlayer, FSMStateID.Fleeing);
+        boiding.AddTransition(Transition.LostPlayer, FSMStateID.Wandering);
+        boiding.AddTransition(Transition.InPen, FSMStateID.Standing);
 
         AddFSMState(wandering);
         AddFSMState(fleeing);

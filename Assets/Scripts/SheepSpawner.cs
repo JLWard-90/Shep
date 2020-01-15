@@ -21,6 +21,7 @@ public class SheepSpawner : MonoBehaviour
         {
             GameObject newsheep = GameObject.Instantiate(sheepPrefab);
             newsheep.transform.position = new Vector3(Random.Range(sheepXRange.x,sheepXRange.y),0,Random.Range(sheepZRange.x,sheepXRange.y));
+            newsheep.transform.rotation = Quaternion.Euler(0, Random.Range(0f,360f), 0);
         }
     }
 }

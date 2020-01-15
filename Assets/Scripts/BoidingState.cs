@@ -35,7 +35,12 @@ public class BoidingState : FSMState
         //In our reasoning state we need to be able to add or remove sheep from the flock
         //Add sheep if they become close enough
         //Remove sheep if they are far away enough
-        if (Vector3.Distance(npc.position, player.position) < sheep.shepDistLimit)
+        if (sheep.inPen)
+        {
+            Debug.Log("transition to stand");
+            sheep.SetTransition(Transition.InPen);
+        }
+        else if (Vector3.Distance(npc.position, player.position) < sheep.shepDistLimit)
         {
             Debug.Log("Switching to fleeing state");
             sheep.SetTransition(Transition.SawPlayer);
@@ -50,9 +55,6 @@ public class BoidingState : FSMState
             Debug.Log("Switch to Walking state");
             sheep.SetTransition(Transition.LostPlayer);//Lost player pretty much just sets the sheep to wander so I might as well just use that.
         }
-        
-        //Switch to wandering state if no more sheep in flock on a coin flip
-        //Switch to fleeing state if player too close
     }
 
     public override void Act(Transform player, Transform npc)

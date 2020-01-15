@@ -54,6 +54,8 @@ MonoBehaviour:
   maxSpeed: 20
   shepDistance: 100
   sheepActive: 1
+  turnDir: 0
+  friendDistance: 10
 --- !u!65 &52014316512234108
 BoxCollider:
   m_ObjectHideFlags: 0

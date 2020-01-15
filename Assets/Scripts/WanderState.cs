@@ -5,6 +5,7 @@ using UnityEngine;
 public class WanderState : FSMState
 {
     private float shepDistanceLimit = 50;
+    GameObject[] sheeples;
     private SheepController sheep;
  
     public WanderState(Transform npc)
@@ -13,6 +14,7 @@ public class WanderState : FSMState
         shepDistanceLimit = sheep.shepDistLimit;
         sheep.InitRandomWalk();
         stateID = FSMStateID.Wandering;
+        GameObject[] sheeples = GameObject.FindGameObjectsWithTag("sheep");
     }
 
     public override void Reason(Transform player, Transform npc)
@@ -31,6 +33,25 @@ public class WanderState : FSMState
             {
                 Debug.Log("Switch to Fleeing state");
                 sheep.SetTransition(Transition.SawPlayer);
+            }
+        }
+        else if (Random.Range(0, 2) > 0)//if on coin flip
+        {
+            if (sheeples == null)
+            {
+                sheeples = GameObject.FindGameObjectsWithTag("sheep");
+            }
+            if (sheeples.Length > 0) //This should always be true
+            {
+                foreach(GameObject sh in sheeples)
+                {
+                    //Debug.Log(Vector3.Distance(npc.position, sh.transform.position));
+                    if (Vector3.Distance(npc.position, sh.transform.position) < sheep.friendDistance)
+                    {
+                        Debug.Log("Switch to Boiding state");
+                        sheep.SetTransition(Transition.FoundFriend);
+                    }
+                }
             }
         }
         
