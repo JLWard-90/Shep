@@ -154,7 +154,7 @@ MonoBehaviour:
     type: 3}
   sheepXRange: {x: -100, y: 100}
   sheepZRange: {x: -100, y: 100}
-  nSheep: 20
+  nSheep: 50
 --- !u!4 &140330360
 Transform:
   m_ObjectHideFlags: 0
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 1343049472}
   - component: {fileID: 1343049471}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Cube3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 1520132729}
   - component: {fileID: 1520132728}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Cube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -880,7 +880,7 @@ GameObject:
   - component: {fileID: 1981095950}
   - component: {fileID: 1981095949}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

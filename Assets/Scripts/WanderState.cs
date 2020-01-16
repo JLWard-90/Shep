@@ -63,12 +63,13 @@ public class WanderState : FSMState
     {
         RaycastHit hit;
         //Collision avoidance:
-        if (Physics.Raycast(sheep.transform.position + (Vector3.forward * 2), Vector3.forward, out hit))
+        if (Physics.Raycast(sheep.transform.position + (npc.forward * 1), npc.forward, out hit))
         {
             //Debug.Log("collisionDetector hit");
-            float collisionDistance = (sheep.speed * Time.deltaTime) * 50;
-            Debug.Log(collisionDistance);
-            Debug.Log(hit.distance);
+            float collisionDistance = (sheep.speed * Time.deltaTime) * 500;
+            //Debug.Log(hit.transform.gameObject.name);
+            //Debug.Log(collisionDistance);
+            //Debug.Log(hit.distance);
             if (hit.distance < collisionDistance) //If sheep will collide with something
             {
                 if (!avoiding)//If not already avoiding
@@ -86,12 +87,12 @@ public class WanderState : FSMState
                 {
                     leftRight = -1;
                 }
-                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * leftRight * Time.deltaTime), 0);
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * 10 * leftRight * Time.deltaTime), 0);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
-
+                return;//Only do collision avoidance on this Act
             }
 
-            return;//Only do collision avoidance on this Act
+            
         }
         else
         {
