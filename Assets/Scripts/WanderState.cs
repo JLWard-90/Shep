@@ -7,7 +7,8 @@ public class WanderState : FSMState
     private float shepDistanceLimit = 50;
     GameObject[] sheeples;
     private SheepController sheep;
- 
+    bool avoiding = false;
+
     public WanderState(Transform npc)
     {
         sheep = npc.GetComponent<SheepController>();
@@ -46,7 +47,7 @@ public class WanderState : FSMState
                 foreach(GameObject sh in sheeples)
                 {
                     
-                    if (Vector3.Distance(npc.position, sh.transform.position) < sheep.friendDistance && npc != sh)
+                    if (Vector3.Distance(npc.position, sh.transform.position) < sheep.friendDistance && npc.gameObject != sh.gameObject)
                     {
                         Debug.Log(Vector3.Distance(npc.position, sh.transform.position));
                         //Debug.Log("Switch to Boiding state");
@@ -60,6 +61,42 @@ public class WanderState : FSMState
 
     public override void Act(Transform player, Transform npc)
     {
+        RaycastHit hit;
+        //Collision avoidance:
+        if (Physics.Raycast(sheep.transform.position + (Vector3.forward * 2), Vector3.forward, out hit))
+        {
+            //Debug.Log("collisionDetector hit");
+            float collisionDistance = (sheep.speed * Time.deltaTime) * 50;
+            Debug.Log(collisionDistance);
+            Debug.Log(hit.distance);
+            if (hit.distance < collisionDistance) //If sheep will collide with something
+            {
+                if (!avoiding)//If not already avoiding
+                {
+                    Debug.Log("avoiding collision");
+                    sheep.turnDir = TurnDir();
+                    avoiding = true;
+                }
+                int leftRight = 0;
+                if (sheep.turnDir == 1)
+                {
+                    leftRight = 1;
+                }
+                else
+                {
+                    leftRight = -1;
+                }
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * leftRight * Time.deltaTime), 0);
+                npc.position += sheep.speed * npc.forward * Time.deltaTime;
+
+            }
+
+            return;//Only do collision avoidance on this Act
+        }
+        else
+        {
+            avoiding = false;
+        }
         //throw new System.NotImplementedException();
         //The behaviour associated with this state:
         sheep.SimpleSheepMovement();
@@ -73,5 +110,18 @@ public class WanderState : FSMState
     public override void BeforeExit()
     {
         //throw new System.NotImplementedException();
+    }
+
+    int TurnDir()
+    {
+        if (sheep.turnDir == 1) //Turn positive
+            return 1;
+        else if (sheep.turnDir == 2) //Turn negative
+            return 2;
+        else
+        {
+            int dir = Random.Range(1, 3);
+            return dir;
+        }
     }
 }

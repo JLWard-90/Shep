@@ -154,7 +154,7 @@ MonoBehaviour:
     type: 3}
   sheepXRange: {x: -100, y: 100}
   sheepZRange: {x: -100, y: 100}
-  nSheep: 2
+  nSheep: 20
 --- !u!4 &140330360
 Transform:
   m_ObjectHideFlags: 0

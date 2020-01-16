@@ -43,13 +43,17 @@ public class BoidingState : FSMState
             Debug.Log("transition to stand");
             sheep.SetTransition(Transition.InPen);
         }
+        else if (Vector3.Distance(npc.position, player.position)<sheep.shepDistLimit)
+        {
+            sheep.SetTransition(Transition.SawPlayer);
+        }
         else if (hit.Length > 0)
         {
             //Add sheep to flock
             //
             foreach (RaycastHit q in hit)
             {
-                if (q.transform.gameObject.tag == "sheep" && !otherSheepInFlock.Contains(q.transform) && q.transform != npc)
+                if (q.transform.gameObject.tag == "sheep" && !otherSheepInFlock.Contains(q.transform) && q.transform != npc && q.distance > 2)
                 {
                     otherSheepInFlock.Add(q.transform);
                 }
@@ -86,10 +90,10 @@ public class BoidingState : FSMState
         //Raycast forward:
         RaycastHit hit;
         //Debug.Log("boiding...");
-        if (Physics.Raycast(sheep.transform.position, Vector3.forward, out hit))
+        if (Physics.Raycast(sheep.transform.position+(Vector3.forward*2), Vector3.forward, out hit))
         {
             //Debug.Log("collisionDetector hit");
-            float collisionDistance = (sheep.speed * Time.deltaTime) * 30;
+            float collisionDistance = (sheep.speed * Time.deltaTime) * 50;
             Debug.Log(collisionDistance);
             Debug.Log(hit.distance);
             if (hit.distance < collisionDistance) //If sheep will collide with something
@@ -114,7 +118,7 @@ public class BoidingState : FSMState
 
             }
             
-            //return;//Only do collision avoidance on this Act
+            return;//Only do collision avoidance on this Act
         }
 
         //Debug.Log(otherSheepInFlock.Count);
