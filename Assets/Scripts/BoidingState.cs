@@ -113,7 +113,7 @@ public class BoidingState : FSMState
                 {
                     leftRight = -1;
                 }
-                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * 10 * leftRight * Time.deltaTime), 0);
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * sheep.collisionAvoidTurnWeight * leftRight * Time.deltaTime), 0);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
                 return;//Only do collision avoidance on this Act
             }
@@ -145,9 +145,9 @@ public class BoidingState : FSMState
                 averageFlockPosition.z = averageFlockPosition.z / otherSheepInFlock.Count;
                 Vector3 towardsFlockCentre = averageFlockPosition - npc.transform.position;
                 //0.75 weighting to flock average direction
-                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed *0.1f* Time.deltaTime * (averageFlockAngle - npc.eulerAngles.y)), 0);
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed *sheep.averageHeadingTurnWeight* Time.deltaTime * (averageFlockAngle - npc.eulerAngles.y)), 0);
                 //0.25 weighting to flock centre
-                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*0.01f, 0.0f);
+                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*sheep.centreFlockTurnWeight, 0.0f);
                 npc.rotation = Quaternion.LookRotation(newDir);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
             }

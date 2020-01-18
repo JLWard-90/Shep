@@ -87,7 +87,7 @@ public class WanderState : FSMState
                 {
                     leftRight = -1;
                 }
-                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * 10 * leftRight * Time.deltaTime), 0);
+                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * sheep.collisionAvoidTurnWeight * leftRight * Time.deltaTime), 0);
                 npc.position += sheep.speed * npc.forward * Time.deltaTime;
                 return;//Only do collision avoidance on this Act
             }
