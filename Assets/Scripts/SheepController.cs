@@ -28,6 +28,7 @@ public class SheepController : FSM //The sheep controller inherits from the FSM 
     public float collisionAvoidTurnWeight = 5;
     public float averageHeadingTurnWeight = 0.1f;
     public float centreFlockTurnWeight = 0.1f;
+    public float headingTolerance = 10f; //The tolerance within which a sheep will choose to try to re-orientate itself to the mean flock heading
     private void Awake() 
     {
         shepTransform = GameObject.Find("Player").transform;

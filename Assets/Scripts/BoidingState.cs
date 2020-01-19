@@ -144,16 +144,20 @@ public class BoidingState : FSMState
                 averageFlockPosition.y = 0;// averageFlockPosition.y / otherSheepInFlock.Count;
                 averageFlockPosition.z = averageFlockPosition.z / otherSheepInFlock.Count;
                 Vector3 towardsFlockCentre = averageFlockPosition - npc.transform.position;
-                //0.75 weighting to flock average direction
-                npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed *sheep.averageHeadingTurnWeight* Time.deltaTime * (averageFlockAngle - npc.eulerAngles.y)), 0);
-                //0.25 weighting to flock centre
-                Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed*sheep.centreFlockTurnWeight, 0.0f);
-                npc.rotation = Quaternion.LookRotation(newDir);
-                npc.position += sheep.speed * npc.forward * Time.deltaTime;
+                if (Mathf.Abs(averageFlockAngle - npc.eulerAngles.y) > sheep.headingTolerance)//Now do either orientate towards flock average heading, or towards flock centre
+                {
+                    npc.rotation = Quaternion.Euler(0, npc.eulerAngles.y + (sheep.turnSpeed * sheep.averageHeadingTurnWeight * Time.deltaTime * (averageFlockAngle - npc.eulerAngles.y)), 0);
+                }
+                else
+                {
+                    Vector3 newDir = Vector3.RotateTowards(npc.forward, towardsFlockCentre, sheep.turnSpeed * sheep.centreFlockTurnWeight, 0.0f);
+                    npc.rotation = Quaternion.LookRotation(newDir);
+                }
+                npc.position += sheep.speed * npc.forward * Time.deltaTime; //Sheep always moving
             }
     }
 
-    int TurnDir()
+    int TurnDir() //This should be updated to be more sophisticated in the future.
     {
         if (sheep.turnDir == 1) //Turn positive
             return 1;

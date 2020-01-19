@@ -56,6 +56,10 @@ MonoBehaviour:
   sheepActive: 1
   turnDir: 0
   friendDistance: 10
+  collisionAvoidTurnWeight: 10
+  averageHeadingTurnWeight: 0.1
+  centreFlockTurnWeight: 0.1
+  headingTolerance: 10
 --- !u!65 &52014316512234108
 BoxCollider:
   m_ObjectHideFlags: 0
